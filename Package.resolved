@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "observable",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/cookednick/observable",
+      "state" : {
+        "branch" : "main",
+        "revision" : "2e33e5e2e5f54b80f1f5c9cbdd13dd6168aa382a"
+      }
+    }
+  ],
+  "version" : 2
+}
