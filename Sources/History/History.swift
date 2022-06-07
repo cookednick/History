@@ -39,7 +39,7 @@ public class History {
 		guard !undos.isEmpty else { return false }
 		let action = undos.removeLast()
 		action.undo()
-		toast = Text("\(Image(systemName: "arrow.uturn.backward")) \(action.toast)")
+		toast = Text("Undo \(action.toast)")
 		redos.append(action)
 		
 		if let next = undos.last {
@@ -57,7 +57,7 @@ public class History {
 		guard !redos.isEmpty else { return false }
 		let action = redos.removeLast()
 		action.redo()
-		toast = Text("\(Image(systemName: "arrow.uturn.forward")) \(action.toast)")
+		toast = Text("Redo \(action.toast)")
 		undos.append(action)
 		nextUndo = "Undo " + action.description
 		
