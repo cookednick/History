@@ -23,6 +23,9 @@ public class History {
 	private var toastTimer: Timer?
 	
 	
+	public init() { }
+	
+	
 	public func save(_ toast: Text, description: String, _ action: @escaping () -> Void, undo: @escaping () -> Void) {
 		redos = []
 		nextRedo = nil
