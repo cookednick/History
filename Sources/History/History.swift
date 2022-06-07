@@ -1,13 +1,26 @@
 import Observable
 import SwiftUI
 
-@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@available(iOS 14.0, macOS 11.0, tvOS 14.0, watchOS 7.0, *)
 public class History {
 	private var undos = [Action]()
 	private var redos = [Action]()
 	
 	@Observable public var nextUndo: String?
 	@Observable public var nextRedo: String?
+	
+	@Observable public var toast: Text? {
+		didSet {
+			if toast != nil {
+				toastTimer = .scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
+					self?.toast = nil
+				}
+			} else {
+				toastTimer = nil
+			}
+		}
+	}
+	private var toastTimer: Timer?
 	
 	
 	public func save(_ toast: Text, description: String, _ action: @escaping () -> Void, undo: @escaping () -> Void) {
@@ -23,6 +36,7 @@ public class History {
 		guard !undos.isEmpty else { return false }
 		let action = undos.removeLast()
 		action.undo()
+		toast = Text("\(Image(systemName: "arrow.uturn.backward")) \(action.toast)")
 		redos.append(action)
 		
 		if let next = undos.last {
@@ -40,6 +54,7 @@ public class History {
 		guard !redos.isEmpty else { return false }
 		let action = redos.removeLast()
 		action.redo()
+		toast = Text("\(Image(systemName: "arrow.uturn.forward")) \(action.toast)")
 		undos.append(action)
 		nextUndo = "Undo " + action.description
 		
