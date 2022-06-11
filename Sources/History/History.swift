@@ -9,7 +9,7 @@ public class History {
 	@Observable public var nextUndo: String?
 	@Observable public var nextRedo: String?
 	
-	@Observable public var toast: Text? {
+	@Observable public var toast: Toast? {
 		didSet {
 			if toast != nil {
 				toastTimer = .scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
@@ -39,7 +39,7 @@ public class History {
 		guard !undos.isEmpty else { return false }
 		let action = undos.removeLast()
 		action.undo()
-		toast = Text("Undo \(action.toast)")
+		toast = Toast(Text("Undo \(action.toast)"))
 		redos.append(action)
 		
 		if let next = undos.last {
@@ -57,7 +57,7 @@ public class History {
 		guard !redos.isEmpty else { return false }
 		let action = redos.removeLast()
 		action.redo()
-		toast = Text("Redo \(action.toast)")
+		toast = Toast(Text("Redo \(action.toast)"))
 		undos.append(action)
 		nextUndo = "Undo " + action.description
 		
@@ -83,6 +83,27 @@ public class History {
 			self.description = description
 			self.redo = action
 			self.undo = undo
+		}
+	}
+	
+	public struct Toast: Hashable {
+		public let text: Text
+		public let id: UUID
+		
+		
+		public init(_ text: Text) {
+			self.text = text
+			id = UUID()
+		}
+		
+		
+		public func hash(into hasher: inout Hasher) {
+			hasher.combine(id)
+		}
+		
+		
+		public static func ==(lhs: Toast, rhs: Toast) -> Bool {
+			lhs.id == rhs.id
 		}
 	}
 }
