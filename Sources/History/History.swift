@@ -11,6 +11,7 @@ public class History {
 	
 	@Observable public var toast: Toast? {
 		didSet {
+			toastTimer?.invalidate()
 			if toast != nil {
 				toastTimer = .scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self] _ in
 					self?.toast = nil
