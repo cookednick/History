@@ -40,7 +40,7 @@ public class History {
 		guard !undos.isEmpty else { return false }
 		let action = undos.removeLast()
 		action.undo()
-		toast = Toast(Text("Undo \(action.toast)"))
+		toast = Toast(Text("Undo ").bold() + action.toast)
 		redos.append(action)
 		
 		if let next = undos.last {
@@ -58,7 +58,7 @@ public class History {
 		guard !redos.isEmpty else { return false }
 		let action = redos.removeLast()
 		action.redo()
-		toast = Toast(Text("Redo \(action.toast)"))
+		toast = Toast(Text("Redo ").bold() + action.toast)
 		undos.append(action)
 		nextUndo = "Undo " + action.description
 		
